@@ -1,9 +1,9 @@
 -
-	In order to test process of the Account Invoice Uos,
+    In order to test process of the Account Invoice Uos,
 - 
-	I create a sale order.
+    I create a sale order.
 -  
-	!record {model: sale.order, id: sale_order_test}:
+    !record {model: sale.order, id: sale_order_test}:
         partner_id: base.res_partner_2
         order_line:
             - product_id: product.product_product_2
