@@ -16,25 +16,15 @@
 -
     !workflow {model: sale.order, action: order_confirm, ref: sale_order_test}
 -
-    Now, I dispatch delivery order.
+    I create manual Invoice for order.
 -
-    !python {model: stock.partial.picking}: |
-        order = self.pool.get('sale.order').browse(cr, uid, ref("sale_order_test"))
-        for pick in order.picking_ids:
-            data = pick.force_assign()
-            if data == True:
-              partial_id = self.create(cr, uid, {}, context={'active_model': 'stock.picking','active_ids': [pick.id]})
-              self.do_partial(cr, uid, [partial_id])
+    !record {model: sale.make.invoice, id: sale_make_invoice_1}:
+        invoice_date: !eval time.strftime('%Y-%m-%d')
 -
-    I create invoice from delivery order.
--
-    !python {model: stock.invoice.onshipping}: |
-        sale = self.pool.get('sale.order')
-        sale_order = sale.browse(cr, uid, ref("sale_order_test"))
-        ship_ids = [x.id for x in sale_order.picking_ids]
-        wiz_id = self.create(cr, uid, {'journal_id': ref('account.sales_journal')},
-          {'active_ids': ship_ids, 'active_model': 'stock.picking'})
-        self.create_invoice(cr, uid, [wiz_id], {"active_ids": ship_ids, "active_id": ship_ids[0]})
+    !python {model: sale.make.invoice}: |
+        ctx = context.copy()
+        ctx = ctx.update({"active_model": 'sale.order', "active_ids": [ref("sale_order_test")], "active_id":ref("sale_order_test")})
+        self.make_invoices(cr, uid, [ref("sale_make_invoice_1")], context)
 -
     I check the invoice details after dispatched delivery.
 -
