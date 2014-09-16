@@ -36,8 +36,8 @@ them from linked sale order(s)
         'account_invoice_line_view.xml',
     ],
     'test': [
-        'test/account.yml',
-        ],
+        'test/account_invoice_line_view.yml',
+    ],
     'installable': True,
     'active': False,
 }
