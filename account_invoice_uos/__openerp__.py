@@ -23,6 +23,7 @@
     "version": "1.0",
     "author": "Agile Business Group",
     "website": "http://www.agilebg.com",
+    'license': 'AGPL-3',
     "category": "Account",
     "depends": [
         'sale',
@@ -39,5 +40,4 @@ them from linked sale order(s)
         'test/account_invoice_line_view.yml',
     ],
     'installable': True,
-    'active': False,
 }
