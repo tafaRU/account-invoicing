@@ -16,22 +16,25 @@
 -
     !workflow {model: sale.order, action: order_confirm, ref: sale_order_test}
 -
-    I create manual Invoice for order.
+    I create advance invoice where type is 'Invoice all the Sale Order'.
 -
-    !record {model: sale.make.invoice, id: sale_make_invoice_1}:
-        invoice_date: !eval time.strftime('%Y-%m-%d')
--
-    !python {model: sale.make.invoice}: |
+    !python {model: sale.advance.payment.inv}: |
         ctx = context.copy()
-        ctx = ctx.update({"active_model": 'sale.order', "active_ids": [ref("sale_order_test")], "active_id":ref("sale_order_test")})
-        self.make_invoices(cr, uid, [ref("sale_make_invoice_1")], context=ctx)
+        ctx.update({"active_model": 'sale.order', "active_ids": [ref("sale_order_test")], "active_id":ref("sale_order_test")})
+        pay_id = self.create(cr, uid, {'advance_payment_method': 'all'})
+        self.create_invoices(cr, uid, [pay_id], context=ctx)
 -
-    I check the invoice details after dispatched delivery.
+    I check Invoice which made advance where type is 'Invoice all the Sale Order'.
+-
+    !python {model: sale.order}: |
+        order = self.browse(cr, uid, ref('sale_order_test'))
+        assert order.invoice_ids, "Invoice should be created after make advance invoice where type is 'Invoice all the Sale Order'."
+-
+    I check the invoice details after after do manual.
 -
     !python {model: sale.order}: |
         order = self.browse(cr, uid, ref("sale_order_test"))
-        assert order.invoice_ids, "Invoice is not created."
         for sale_line in order.order_line:
             for invoice_line in sale_line.invoice_lines:
-                assert invoice_line.sale_uos_id == sale_line.product_uos, "Uos are not correspond"
-                assert invoice_line.sale_uos_qty == sale_line.product_uos_qty, "Uos qty are not correspond"
+                assert invoice_line.sale_uos_id == sale_line.product_uos, "Uos are not matching"
+                assert invoice_line.sale_uos_qty == sale_line.product_uos_qty, "Uos qty are not matching"
