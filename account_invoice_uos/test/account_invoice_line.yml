@@ -24,7 +24,7 @@
     !python {model: sale.make.invoice}: |
         ctx = context.copy()
         ctx = ctx.update({"active_model": 'sale.order', "active_ids": [ref("sale_order_test")], "active_id":ref("sale_order_test")})
-        self.make_invoices(cr, uid, [ref("sale_make_invoice_1")], context)
+        self.make_invoices(cr, uid, [ref("sale_make_invoice_1")], context=ctx)
 -
     I check the invoice details after dispatched delivery.
 -
