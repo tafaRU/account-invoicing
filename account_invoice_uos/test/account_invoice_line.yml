@@ -7,10 +7,10 @@
         partner_id: base.res_partner_2
         order_line:
             - product_id: product.product_product_2
-            - product_uom_qty: 8
-            - product_uom: product.product_uom_hour
-            - product_uos_qty: 1
-            - product_uom: product.product_uom_day
+              product_uom_qty: 8
+              product_uom: product.product_uom_hour
+              product_uos_qty: 1
+              product_uom: product.product_uom_day
 -
     I confirm the sale order.
 -
