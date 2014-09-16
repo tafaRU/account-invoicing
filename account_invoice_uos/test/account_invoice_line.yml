@@ -24,17 +24,17 @@
         pay_id = self.create(cr, uid, {'advance_payment_method': 'all'})
         self.create_invoices(cr, uid, [pay_id], context=ctx)
 -
-    I check Invoice which made advance where type is 'Invoice all the Sale Order'.
+    I check invoice which made advance where type is 'Invoice all the Sale Order'.
 -
     !python {model: sale.order}: |
         order = self.browse(cr, uid, ref('sale_order_test'))
         assert order.invoice_ids, "Invoice should be created after make advance invoice where type is 'Invoice all the Sale Order'."
 -
-    I check the invoice details after after do manual.
+    I check the invoice details after do manual.
 -
     !python {model: sale.order}: |
         order = self.browse(cr, uid, ref("sale_order_test"))
         for sale_line in order.order_line:
             for invoice_line in sale_line.invoice_lines:
-                assert invoice_line.sale_uos_id == sale_line.product_uos, "Uos are not matching"
+                assert invoice_line.sale_uos_id.id == sale_line.product_uos.id, "Uos are not matching"
                 assert invoice_line.sale_uos_qty == sale_line.product_uos_qty, "Uos qty are not matching"
