@@ -1,25 +1,23 @@
-# -*- coding: utf-8 -*-
 # Copyright 2016 Camptocamp SA
+# Copyright 2019 Alex Comba - Agile Business Group
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
+
 from odoo import models, fields
 
 
 class ResCompany(models.Model):
     _inherit = 'res.company'
 
-    tax_calculation_rounding = fields.Float('Tax Rounding unit')
+    tax_calculation_rounding = fields.Float('Tax Rounding unit', default=0.05)
     tax_calculation_rounding_account_id = fields.Many2one(
         'account.account',
         'Tax Rounding Account',
-        domain=[('internal_type', '<>', 'view')]
+        domain=[('internal_type', '!=', 'view')]
     )
     tax_calculation_rounding_method = fields.Selection(
-        [('round_per_line', 'Round per Line'),
-         ('round_globally', 'Round Globally'),
+        selection_add=[
          ('swedish_round_globally', 'Swedish Round globally'),
-         ('swedish_add_invoice_line', 'Swedish Round by adding a line'),
-         ],
-        string='Tax Calculation Rounding Method',
+         ('swedish_add_invoice_line', 'Swedish Round by adding a line')],
         help="If you select 'Round per line' : for each tax, the tax "
              "amount will first be computed and rounded for each "
              "PO/SO/invoice line and then these rounded amounts will be "
